@@ -137,7 +137,10 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-CORS_ALLOW_ALL_ORIGINS = True  # For development only
+CORS_ALLOWED_ORIGINS = [
+    "https://shopcart-alpha-three.vercel.app",
+    # Add other allowed origins if necessary
+]
 CORS_ALLOW_CREDENTIALS = True
 
 

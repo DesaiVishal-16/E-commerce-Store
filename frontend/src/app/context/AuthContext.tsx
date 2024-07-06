@@ -7,7 +7,7 @@ import React, {
   useEffect,
   ReactNode,
 } from "react";
-import { signup, login } from "../utils/api"; // Ensure this import is correct
+import { signup, login } from "../utils/api";
 
 interface User {
   username: string;
@@ -43,11 +43,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const fetchUserData = async (token: string) => {
     try {
-      const response = await fetch("http://localhost:8000/user/", {
-        headers: {
-          Authorization: `Token ${token}`,
-        },
-      });
+      const response = await fetch(
+        "https://e-commerce-store-two-fawn.vercel.app/user/",
+        {
+          headers: {
+            Authorization: `Token ${token}`,
+          },
+        }
+      );
 
       if (!response.ok) {
         throw new Error("Failed to fetch user data");

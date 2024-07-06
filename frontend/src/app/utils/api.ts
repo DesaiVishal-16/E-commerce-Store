@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:8000";
+const API_URL = "https://e-commerce-store-two-fawn.vercel.app";
 
 export async function signup(
   username: string,
