@@ -139,6 +139,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ALLOWED_ORIGINS = [
     "https://shopcart-alpha-three.vercel.app",
+    "https://e-commerce-store-two-fawn.vercel.app"
     # Add other allowed origins if necessary
 ]
 CORS_ALLOW_CREDENTIALS = True
