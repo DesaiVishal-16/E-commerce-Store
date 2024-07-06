@@ -1,24 +1,38 @@
 "use client";
 
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import Image from "next/image";
 import logo from "../../public/logo.svg";
 import { IoBagHandle, IoSearchSharp } from "react-icons/io5";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { ImCross } from "react-icons/im";
 import { useRouter } from "next/navigation";
+import { useAuth } from "@/app/context/AuthContext";
 
 const Navbar: FC = () => {
   const [openSidebar, setOpenSidebar] = useState<Boolean>(false);
+  const { user, login, logout } = useAuth();
+  const router = useRouter();
 
+  useEffect(() => {
+    console.log("User state changed:", user);
+  }, [user]);
+  console.log(user);
   const toogleSidebar = () => {
     setOpenSidebar(!openSidebar);
   };
-  const router = useRouter();
+
+  useEffect(() => {
+    console.log("Navbar mounted");
+  }, []);
 
   const handleNavigation = (path: string) => {
     router.push(path);
     setOpenSidebar(false);
+  };
+  const handleLogout = () => {
+    logout();
+    handleNavigation("/");
   };
 
   return (
@@ -51,28 +65,45 @@ const Navbar: FC = () => {
           <li onClick={toogleSidebar}>
             <ImCross className="fill-gray-600 absolute top-2 right-4 text-lg sm:hidden" />
           </li>
-          <li className="flex gap-2 mt-10 mr-0 sm:mt-0 xl:mr-10 cursor-pointer">
+          <li className="flex gap-2 mt-10 mr-0 sm:mt-0 xl:mr-6 cursor-pointer">
             <IoBagHandle className="text-2xl sm:text-4xl text-sky-600" />
             <span className="text-lg font-semibold text-sky-600 sm:hidden">
               Cart
             </span>
           </li>
 
-          <li className="text-base sm:text-lg font-semibold text-sky-600 flex flex-col sm:flex-row gap-4 w-full px-2">
-            <button
-              onClick={() => handleNavigation("/auth/login")}
-              className="cursor-pointer bg-sky-600 sm:bg-transparent text-gray-100 sm:text-sky-600 border-none py-1 rounded-sm"
-            >
-              Login
-            </button>
-            <span className="hidden  sm:block h-8 w-0.5 bg-gray-200"> </span>
-            <button
-              onClick={() => handleNavigation("/auth/signup")}
-              className="cursor-pointer bg-sky-600 sm:bg-transparent text-gray-100 sm:text-sky-600 border-none py-1 rounded-sm"
-            >
-              Signup
-            </button>
-          </li>
+          {user ? (
+            <li className="px-4">
+              <h1 className="text-base">
+                Welcome,&nbsp;
+                <span className="text-lg capitalize font-semibold text-sky-600">
+                  {user.username}
+                </span>
+              </h1>
+              <button
+                onClick={handleLogout}
+                className="text-lg font-bold bg-sky-600 text-gray-200 px-2 py-1 rounded-sm w-full mt-4"
+              >
+                Logout
+              </button>
+            </li>
+          ) : (
+            <li className="text-base sm:text-lg font-semibold text-sky-600 flex flex-col sm:flex-row gap-4 w-full px-2">
+              <button
+                onClick={() => handleNavigation("/auth/login")}
+                className="cursor-pointer bg-sky-600 sm:bg-transparent text-gray-100 sm:text-sky-600 border-none py-1 rounded-sm"
+              >
+                Login
+              </button>
+              <span className="hidden  sm:block h-8 w-0.5 bg-gray-200"> </span>
+              <button
+                onClick={() => handleNavigation("/auth/signup")}
+                className="cursor-pointer bg-sky-600 sm:bg-transparent text-gray-100 sm:text-sky-600 border-none py-1 rounded-sm"
+              >
+                Signup
+              </button>
+            </li>
+          )}
         </ul>
 
         <GiHamburgerMenu

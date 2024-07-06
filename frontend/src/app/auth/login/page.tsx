@@ -3,31 +3,58 @@
 import Image from "next/image";
 import logo from "../../../../public/logo.svg";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { login } from "../../utils/api";
+import { useAuth } from "@/app/context/AuthContext";
 
 export default function LoginPage() {
   const router = useRouter();
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const { login } = useAuth();
 
   const handleNavigation = (path: string) => {
     router.push(path);
   };
 
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      console.log("Attempting login...");
+      await login(username, password);
+      console.log("Login successful in component");
+      router.push("/"); // or wherever you want to redirect after login
+    } catch (error) {
+      console.error("Login error in component:", error);
+      // Handle error (e.g., show error message to user)
+    }
+  };
   return (
     <div className="login-page bg-sky-600 w-80 sm:w-3/4 lg:w-1/2 mx-auto my-32 sm:my-20 rounded-lg flex flex-col sm:flex-row justify-center sm:justify-between gap-10 sm:gap-0 shadow-xl p-6 sm:p-0">
       <div className="left-side flex flex-col items-center sm:items-start mx-4 my-0 sm:mx-10 sm:my-8">
         <h1 className="text-2xl text-gray-100">Welcome Back,</h1>
-        <form className="mt-8 sm:mt-16 flex flex-col gap-6 sm:gap-8 w-full">
+        <form
+          onSubmit={handleSubmit}
+          className="mt-8 sm:mt-16 flex flex-col gap-6 sm:gap-8 w-full"
+        >
           <input
             className="text-base pl-2 text-white bg-inherit border-b-2 border-gray-300 outline-none placeholder-bold placeholder:text-white"
-            type="email"
-            name="email"
-            placeholder="Enter Email"
+            type="text"
+            name="username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            placeholder="Enter Username"
+            autoComplete="username"
             required
           />
           <input
             className="text-base pl-2 text-white bg-inherit border-b-2 border-gray-300 outline-none placeholder-bold placeholder:text-white"
             type="password"
             name="pass"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
             placeholder="Enter Password"
+            autoComplete="current-password"
             required
           />
           <button className="border-none text-sky-600 font-bold bg-gray-100 rounded-lg py-2 px-4 hover:bg-gray-200 shadow-lg">
