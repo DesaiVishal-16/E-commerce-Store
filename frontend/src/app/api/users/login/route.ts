@@ -5,7 +5,6 @@ export async function POST(request: Request) {
   try {
     const { username, password } = await request.json();
 
-    // Here, you would typically make a fetch request to your Django backend
     const response = await fetch(BACKEND_URL, {
       method: "POST",
       headers: {

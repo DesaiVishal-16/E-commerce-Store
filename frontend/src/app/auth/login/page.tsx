@@ -23,10 +23,9 @@ export default function LoginPage() {
       console.log("Attempting login...");
       await login(username, password);
       console.log("Login successful in component");
-      router.push("/"); // or wherever you want to redirect after login
+      router.push("/");
     } catch (error) {
       console.error("Login error in component:", error);
-      // Handle error (e.g., show error message to user)
     }
   };
   return (
