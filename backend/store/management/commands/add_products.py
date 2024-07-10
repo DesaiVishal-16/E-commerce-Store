@@ -12,7 +12,7 @@ class Command(BaseCommand):
                 'name': 'Bag',
                 'description': 'A stylish and durable bag.',
                 'image': 'products/bag.jpg',
-                'price': 49.99,
+                'price': 499.99,
                 'category': 'Bags',
                 'stock': 100
             },
@@ -20,7 +20,7 @@ class Command(BaseCommand):
                 'name': 'Shoes',
                 'description': 'Comfortable running shoes.',
                 'image': 'products/shoes.jpg',
-                'price': 79.99,
+                'price': 7999.99,
                 'category': 'Footwear',
                 'stock': 50
             },
@@ -28,10 +28,34 @@ class Command(BaseCommand):
                 'name': 'Watch',
                 'description': 'A sleek and modern watch.',
                 'image': 'products/watch.jpg',
-                'price': 199.99,
+                'price': 1999.99,
                 'category': 'Accessories',
                 'stock': 75
-            }
+            },
+            {
+                'name': 'Camera',
+                'description': 'High-resolution digital camera.',
+                'image': 'products/camera.jpg',
+                'price': 15599.99,
+                'category': 'Electronics',
+                'stock': 20
+            },
+            {
+                'name': 'T-Shirt',
+                'description': 'Comfortable cotton t-shirt.',
+                'image': 'products/tshirt.jpg',
+                'price': 2999.99,
+                'category': 'Clothing',
+                'stock': 150
+            },
+            {
+                'name': 'Mobile Phone',
+                'description': 'Latest smartphone with advanced features.',
+                'image': 'products/phone.jpg',
+                'price': 39999.99,
+                'category': 'Electronics',
+                'stock': 30
+            },
         ]
 
         # Iterate over products and create them if they don't exist

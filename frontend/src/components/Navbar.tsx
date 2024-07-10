@@ -8,11 +8,13 @@ import { GiHamburgerMenu } from "react-icons/gi";
 import { ImCross } from "react-icons/im";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/app/context/AuthContext";
+import { useCart } from "@/app/context/CartContext";
 
 const Navbar: FC = () => {
   const [openSidebar, setOpenSidebar] = useState<Boolean>(false);
-  const { user, login, logout } = useAuth();
+  const { user, logout } = useAuth();
   const router = useRouter();
+  const { cartItems } = useCart();
 
   useEffect(() => {
     console.log("User state changed:", user);
@@ -65,8 +67,16 @@ const Navbar: FC = () => {
           <li onClick={toogleSidebar}>
             <ImCross className="fill-gray-600 absolute top-2 right-4 text-lg sm:hidden" />
           </li>
-          <li className="flex gap-2 mt-10 mr-0 sm:mt-0 xl:mr-6 cursor-pointer">
-            <IoBagHandle className="text-2xl sm:text-4xl text-sky-600" />
+          <li className="cart flex gap-2 mt-10 mr-0 sm:mt-0 xl:mr-6 cursor-pointer relative">
+            <IoBagHandle
+              onClick={() => handleNavigation("/cart")}
+              className="text-2xl sm:text-4xl text-sky-600"
+            />
+            {cartItems.length > 0 && (
+              <span className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">
+                {cartItems.length}
+              </span>
+            )}
             <span className="text-lg font-semibold text-sky-600 sm:hidden">
               Cart
             </span>

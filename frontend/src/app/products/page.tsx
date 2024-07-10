@@ -5,8 +5,9 @@ import { fetchProducts } from "../utils/api";
 import Image from "next/image";
 import { useAuth } from "../context/AuthContext";
 import { useRouter } from "next/navigation";
+import { useCart } from "../context/CartContext";
 
-interface Product {
+export interface Product {
   id: number;
   name: string;
   description: string;
@@ -18,6 +19,7 @@ const ProductsPage: React.FC = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const router = useRouter();
   const { user } = useAuth();
+  const { addToCart } = useCart();
 
   useEffect(() => {
     const getProducts = async () => {
@@ -28,30 +30,36 @@ const ProductsPage: React.FC = () => {
     getProducts();
   }, []);
 
-  const handleAddToCart = (productId: number) => {
+  const handleAddToCart = (product: Product) => {
     if (user) {
-      router.push("/cart");
+      addToCart({
+        id: product.id,
+        name: product.name,
+        price: parseFloat(product.price),
+        quantity: 1,
+        image: product.image,
+      });
     } else {
       router.push("/auth/login");
     }
   };
 
   return (
-    <div className="absolute top-32 left-10 w-full overflow-x-hidden px-10">
+    <div className="mt-36 w-full overflow-x-hidden px-10 pb-40">
       <h1 className="text-3xl font-bold mb-6 text-sky-800">Products</h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pr-20">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {products.map((product) => (
           <div
             key={product.id}
-            className="border bg-sky-700 text-gray-100 rounded-lg shadow-lg p-4 flex flex-col items-center mt-10 cursor-pointer"
+            className="border bg-sky-700 text-gray-100 rounded-lg shadow-lg p-4 flex flex-col items-center mt-2 cursor-pointer"
           >
             {product.image ? (
               <Image
-                src={`http://localhost:8000/media/${product.image}`}
+                src={`http://localhost:8000${product.image}`}
                 alt={product.name}
                 width={50}
-                height={100}
-                className="object-cover"
+                height={50}
+                className="object-cover w-full h-80"
               />
             ) : (
               <div className="w-64 h-64 flex items-center justify-center bg-gray-200">
@@ -60,9 +68,9 @@ const ProductsPage: React.FC = () => {
             )}
             <h2 className="text-xl font-semibold mt-4">{product.name}</h2>
             <p className=" mt-2">{product.description}</p>
-            <p className="text-lg font-bold mt-2">${product.price}</p>
+            <p className="text-lg font-bold mt-2">Rs.&nbsp;{product.price}</p>
             <button
-              onClick={() => handleAddToCart(product.id)}
+              onClick={() => handleAddToCart(product)}
               className="mt-3 w-full bg-gray-200 text-sky-600 rounded-full font-bold hover:bg-gray-300 text-lg"
             >
               Add to cart

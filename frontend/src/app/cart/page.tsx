@@ -1,9 +1,10 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/app/context/AuthContext";
+import { useCart } from "@/app/context/CartContext";
 
 interface CartItem {
   id: number;
@@ -16,46 +17,7 @@ interface CartItem {
 const CartPage: React.FC = () => {
   const router = useRouter();
   const { user } = useAuth();
-  const [cartItems, setCartItems] = useState<CartItem[]>([
-    {
-      id: 1,
-      name: "Sample Product",
-      price: 49.99,
-      quantity: 1,
-      image: "sample.jpg",
-    },
-    {
-      id: 2,
-      name: "Another Product",
-      price: 29.99,
-      quantity: 2,
-      image: "another.jpg",
-    },
-  ]);
-
-  const calculateTotal = () => {
-    return cartItems.reduce((total, item) => {
-      return total + item.price * item.quantity;
-    }, 0);
-  };
-
-  const removeFromCart = (id: number) => {
-    const updatedCart = cartItems.filter((item) => item.id !== id);
-    setCartItems(updatedCart);
-  };
-
-  const updateQuantity = (id: number, newQuantity: number) => {
-    const updatedCart = cartItems.map((item) =>
-      item.id === id ? { ...item, quantity: newQuantity } : item
-    );
-    setCartItems(updatedCart);
-  };
-
-  const handleCheckout = () => {
-    console.log("Checkout process initiated...");
-
-    router.push("/checkout");
-  };
+  const { cartItems, removeFromCart, updateQuantity } = useCart();
 
   useEffect(() => {
     if (!user) {
@@ -63,39 +25,69 @@ const CartPage: React.FC = () => {
     }
   }, [user, router]);
 
+  const calculateTotal = () => {
+    return cartItems.reduce((total, item) => {
+      return total + item.price * item.quantity;
+    }, 0);
+  };
+
+  const handleCheckout = () => {
+    console.log("Checkout process initiated...");
+    router.push("/checkout");
+  };
+
+  const handleNavigation = (path: string) => {
+    router.push(path);
+  };
+
   return (
     <div className="container mx-20 mt-8">
       <h1 className="text-3xl font-bold mb-4 text-sky-800 capitalize">
         {user?.username} Cart
       </h1>
       {cartItems.length === 0 ? (
-        <p>Your cart is empty.</p>
+        <div className="flex-col text-center justify-center items-center">
+          <p className="text-4xl text-red-500">Your cart is empty.</p>
+          <br />
+          <button
+            onClick={() => handleNavigation("/")}
+            className="text-xl font-bold text-gray-100 bg-sky-600 rounded-md py-2 px-4"
+          >
+            Start Shopping
+          </button>
+        </div>
       ) : (
         <>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-col-1 mt-10 gap-6 pb-20 ">
             {cartItems.map((item) => (
               <div
                 key={item.id}
-                className="border bg-sky-700 rounded-lg shadow-lg p-4 flex flex-col items-center mt-4"
+                className="border w-1/2 h-20 bg-sky-700 text-gray-100 rounded-lg shadow-lg p-4 flex items-center justify-between  ml-4 cursor-pointer"
               >
                 {item.image ? (
                   <Image
-                    src={`/images/${item.image}`}
+                    src={`http://localhost:8000${item.image}`}
                     alt={item.name}
                     width={50}
                     height={50}
-                    className="object-cover"
+                    className="object-cover w-10 h-10"
                   />
                 ) : (
                   <div className="w-64 h-64 flex items-center justify-center bg-gray-200">
                     <p>No image available</p>
                   </div>
                 )}
-                <h2 className="text-xl font-semibold mt-4">{item.name}</h2>
-                <p className="text-lg font-bold mt-2">${item.price}</p>
+                <h2 className="text-xl font-semibold mt-4 text-white">
+                  {item.name}
+                </h2>
+                <p className="text-lg font-bold mt-2 text-white">
+                  Rs.&nbsp;{item.price.toFixed(2)}
+                </p>
                 <div className="flex items-center mt-2">
                   <button
-                    onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                    onClick={() =>
+                      updateQuantity(item.id, Math.max(1, item.quantity - 1))
+                    }
                     className="bg-gray-200 text-gray-600 px-4 py-1 rounded-l-lg"
                   >
                     -
@@ -120,8 +112,8 @@ const CartPage: React.FC = () => {
             ))}
           </div>
           <div className="mt-8 flex  absolute top-2 left-96">
-            <div className="text-xl font-bold text-blue-800">
-              Total: ${calculateTotal().toFixed(2)}
+            <div className="text-2xl font-bold text-green-600">
+              Total: Rs.&nbsp;{calculateTotal().toFixed(2)}
             </div>
           </div>
           <div className="mt-4 flex absolute top-2 right-20">

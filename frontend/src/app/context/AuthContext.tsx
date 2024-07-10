@@ -43,14 +43,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const fetchUserData = async (token: string) => {
     try {
-      const response = await fetch(
-        "https://e-commerce-store-two-fawn.vercel.app/user/",
-        {
-          headers: {
-            Authorization: `Token ${token}`,
-          },
-        }
-      );
+      const response = await fetch("http://localhost:8000/", {
+        headers: {
+          Authorization: `Token ${token}`,
+        },
+      });
 
       if (!response.ok) {
         throw new Error("Failed to fetch user data");

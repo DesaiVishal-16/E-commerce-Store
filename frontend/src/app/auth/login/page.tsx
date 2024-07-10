@@ -4,7 +4,6 @@ import Image from "next/image";
 import logo from "../../../../public/logo.svg";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { login } from "../../utils/api";
 import { useAuth } from "@/app/context/AuthContext";
 
 export default function LoginPage() {

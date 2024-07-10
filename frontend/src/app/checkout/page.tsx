@@ -35,12 +35,12 @@ const CheckoutPage: React.FC = () => {
 
     console.log("Submitting order:", shippingDetails);
 
-    router.push("/order-summary");
+    router.push("/order");
   };
 
   return (
     <div className="container mx-auto mt-8">
-      <h1 className="text-3xl font-bold mb-4 text-sky-800">Checkout</h1>
+      <h1 className="text-3xl font-bold mb-4 text-sky-800 ml-20">Checkout</h1>
       {user ? (
         <form onSubmit={handleSubmit} className="max-w-lg mx-auto text-sky-600">
           <div className="grid grid-cols-1 gap-6">

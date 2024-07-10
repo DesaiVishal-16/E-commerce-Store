@@ -1,7 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    domains: ["localhost"], // Add your hostname here
+    domains: ["localhost"],
+    unoptimized: true,
   },
 };
 

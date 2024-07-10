@@ -1,4 +1,6 @@
-const API_URL = "https://e-commerce-store-two-fawn.vercel.app";
+import { Product } from "../products/page";
+
+const API_URL = "http://localhost:8000";
 
 export async function signup(
   username: string,
@@ -37,12 +39,17 @@ export async function login(username: string, password: string) {
   return response.json();
 }
 
-export const fetchProducts = async () => {
-  const response = await fetch(`${API_URL}/products/`);
-  if (!response.ok) {
-    throw new Error("Failed to fetch products");
+export const fetchProducts = async (): Promise<Product[]> => {
+  try {
+    const response = await fetch("http://localhost:8000/products/");
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    return response.json();
+  } catch (error) {
+    console.error("Error fetching products:", error);
+    throw error;
   }
-  return response.json();
 };
 
 export const fetchProductById = async (id: number) => {

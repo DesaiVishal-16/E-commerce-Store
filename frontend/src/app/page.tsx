@@ -1,5 +1,5 @@
 import dynamic from "next/dynamic";
-import ProductsPage from "./product/page";
+import ProductsPage from "./products/page";
 const Navbar = dynamic(() => import("../components/Navbar"), { ssr: false });
 
 export default function Home() {

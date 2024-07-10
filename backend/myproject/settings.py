@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-sflxxl@x@yw6y)tpyoj%3*kk3-59oc*nx5+phw$0n&fm@(8zpy
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '.vercel.app']
 
 
 # Application definition
@@ -52,7 +52,7 @@ REST_FRAMEWORK = {
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'corsheaders.middleware.CorsMiddleware',  # Placed before CommonMiddleware
+    'corsheaders.middleware.CorsMiddleware', 
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -137,36 +137,40 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-CORS_ALLOWED_ORIGINS = [
-    "https://shopcart-alpha-three.vercel.app",
-    "https://e-commerce-store-two-fawn.vercel.app"
-    # Add other allowed origins if necessary
-]
+# CORS_ALLOWED_ORIGINS = [
+#     "https://shopcart-alpha-three.vercel.app",
+#     "https://e-commerce-store-two-fawn.vercel.app"
+#     # Add other allowed origins if necessary
+# ]
+# CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = True
-
-CORS_ALLOW_HEADERS = [
-    'content-type',
-    'authorization',
-    # Add other headers if necessary
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
 ]
+# CORS_ALLOW_HEADERS = [
+#     'content-type',
+#     'authorization',
+#     # Add other headers if necessary
+# ]
 
-CORS_ALLOW_METHODS = [
-    'GET',
-    'POST',
-    'PUT',
-    'DELETE',
-    'OPTIONS',
-    # Add other methods if necessary
-] 
+# CORS_ALLOW_METHODS = [
+#     'GET',
+#     'POST',
+#     'PUT',
+#     'DELETE',
+#     'OPTIONS',
+#     # Add other methods if necessary
+# ] 
+
 
 import os
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
 MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-ALLOWED_HOSTS = ['.vercel.app' , '.now.sh']
 
-import os
-STATIC_URL = 'static/'
-STATICFILES_DIRS = os.path.join(BASE_DIR, 'static'),
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles_build', 'static')
+
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
