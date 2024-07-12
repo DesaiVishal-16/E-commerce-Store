@@ -66,7 +66,7 @@ const CartPage: React.FC = () => {
               >
                 {item.image ? (
                   <Image
-                    src={`http://localhost:8000${item.image}`}
+                    src={`https://vd116.pythonanywhere.com{item.image}`}
                     alt={item.name}
                     width={50}
                     height={50}
