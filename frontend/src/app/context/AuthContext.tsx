@@ -43,7 +43,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const fetchUserData = async (token: string) => {
     try {
-      const response = await fetch("http://localhost:8000/", {
+      const response = await fetch("https://vd116.pythonanywhere.com/", {
         headers: {
           Authorization: `Token ${token}`,
         },

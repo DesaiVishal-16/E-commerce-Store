@@ -1,6 +1,6 @@
 import { Product } from "../products/page";
 
-const API_URL = "http://localhost:8000";
+const API_URL = "https://vd116.pythonanywhere.com";
 
 export async function signup(
   username: string,
@@ -41,7 +41,7 @@ export async function login(username: string, password: string) {
 
 export const fetchProducts = async (): Promise<Product[]> => {
   try {
-    const response = await fetch("http://localhost:8000/products/");
+    const response = await fetch("https://vd116.pythonanywhere.com/products/");
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }

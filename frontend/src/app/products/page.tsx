@@ -55,7 +55,7 @@ const ProductsPage: React.FC = () => {
           >
             {product.image ? (
               <Image
-                src={`http://localhost:8000${product.image}`}
+                src={`https://vd116.pythonanywhere.com${product.image}`}
                 alt={product.name}
                 width={50}
                 height={50}
