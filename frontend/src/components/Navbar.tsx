@@ -1,6 +1,6 @@
 "use client";
 
-import { FC, useEffect, useRef, useState } from "react";
+import { FC, useEffect, useReducer, useRef, useState } from "react";
 import Image from "next/image";
 import logo from "../../public/logo.svg";
 import { IoBagHandle, IoSearchSharp } from "react-icons/io5";
@@ -15,8 +15,7 @@ const Navbar: FC = () => {
   const { user, logout } = useAuth();
   const router = useRouter();
   const { cartItems } = useCart();
-  const clockRef = useRef();
-  const [time, setTime] = useState<String>();
+  const clockRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     console.log("User state changed:", user);
@@ -38,13 +37,28 @@ const Navbar: FC = () => {
     logout();
     handleNavigation("/");
   };
-  const timeClock = () => {
-    const date = new Date();
-    const hrs = date.getHours;
-    const min = date.getMinutes();
-    const time = `${hrs}:${min}`;
-    setTime(time);
-  };
+
+  useEffect(() => {
+    const updateClock = () => {
+      if (clockRef.current) {
+        const date = new Date();
+        const hrs = date.getHours();
+        const min = date.getMinutes();
+        const sec = date.getSeconds();
+        clockRef.current.textContent = `${hrs.toString().padStart(2, "0")}:${min
+          .toString()
+          .padStart(2, "0")}:${sec.toString().padStart(2, "0")}`;
+      }
+    };
+    updateClock();
+
+    const timeInterval = setInterval(updateClock, 1000);
+
+    return () => {
+      clearInterval(timeInterval);
+    };
+  }, []);
+
   return (
     <div className="w-full py-2 px-5 sm:px-20 sm:py-4 flex flex-col sm:flex-row flex-wrap sm:flex-nowrap gap-4 items-center border-b-2 bg-gray-100 text-black fixed top-0 drop-shadow-md">
       <div className="logo-name flex items-center gap-2">
@@ -55,9 +69,8 @@ const Navbar: FC = () => {
           alt="logo"
         />
         <h1 className="text-xl text-sky-500 font-bold">ShopCart</h1>
-        {time}
       </div>
-
+      <div className="ml-10" ref={clockRef}></div>
       <div className="search-box w-full relative mx-0 sm:mx-10 xl:mx-40">
         <IoSearchSharp className="absolute top-3 left-2 text-xl fill-sky-600" />
         <input
