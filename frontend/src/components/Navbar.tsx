@@ -1,6 +1,6 @@
 "use client";
 
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import logo from "../../public/logo.svg";
 import { IoBagHandle, IoSearchSharp } from "react-icons/io5";
@@ -15,6 +15,8 @@ const Navbar: FC = () => {
   const { user, logout } = useAuth();
   const router = useRouter();
   const { cartItems } = useCart();
+  const clockRef = useRef();
+  const [time, setTime] = useState<String>();
 
   useEffect(() => {
     console.log("User state changed:", user);
@@ -36,7 +38,13 @@ const Navbar: FC = () => {
     logout();
     handleNavigation("/");
   };
-
+  const timeClock = () => {
+    const date = new Date();
+    const hrs = date.getHours;
+    const min = date.getMinutes();
+    const time = `${hrs}:${min}`;
+    setTime(time);
+  };
   return (
     <div className="w-full py-2 px-5 sm:px-20 sm:py-4 flex flex-col sm:flex-row flex-wrap sm:flex-nowrap gap-4 items-center border-b-2 bg-gray-100 text-black fixed top-0 drop-shadow-md">
       <div className="logo-name flex items-center gap-2">
@@ -47,6 +55,7 @@ const Navbar: FC = () => {
           alt="logo"
         />
         <h1 className="text-xl text-sky-500 font-bold">ShopCart</h1>
+        {time}
       </div>
 
       <div className="search-box w-full relative mx-0 sm:mx-10 xl:mx-40">
